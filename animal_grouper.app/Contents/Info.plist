@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDisplayName</key>
+	<string>animal_grouper</string>
+	<key>CFBundleExecutable</key>
+	<string>animal_grouper</string>
+	<key>CFBundleIconFile</key>
+	<string>generated-a9713d40335433caf61e57da1c630e2627b05dd45a74f3e92d56fa4bf8ebc2de.icns</string>
+	<key>CFBundleIdentifier</key>
+	<string>animal_grouper</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>animal_grouper</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>0.0.0</string>
+	<key>NSHighResolutionCapable</key>
+	<true/>
+</dict>
+</plist>
