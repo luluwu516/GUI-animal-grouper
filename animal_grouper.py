@@ -10,10 +10,11 @@ class Animal_grouper:
     def __init__(self):
         self.window = tk.Tk()
         self.window.title(string="Animal Grouper")
-        self.window.iconbitmap(os.getcwd() + "/favicon.ico")
 
         self.file = tk.StringVar()
-        self.file.set("Please select a file.")
+        self.file.set("Please Select a File.")
+        self.output = tk.StringVar()
+        self.output.set("Please Select a Folder.")
         self.gender = tk.BooleanVar()
         self.gender.set(False)
         self.constant = tk.DoubleVar()
@@ -27,14 +28,19 @@ class Animal_grouper:
 
         # Create the five frames.
         self.root = tk.Frame(self.window, padx=20, pady=10)
-        self.input_frame = tk.LabelFrame(self.root, text="Data", padx=20, pady=10)
+        self.input_frame = tk.LabelFrame(self.root, text="Data Input", padx=20, pady=10)
+        self.output_frame = tk.LabelFrame(
+            self.root, text="Output Folder", padx=20, pady=10
+        )
         self.config_frame = tk.LabelFrame(self.root, text="Config", padx=20, pady=5)
         self.log_frame = tk.LabelFrame(self.root, text="Log", padx=20, pady=10)
         self.display_frame = tk.LabelFrame(self.root, text="Status", padx=20, pady=10)
         self.button_frame = tk.Frame(self.root, padx=20, pady=10)
 
         # Create and pack the widgets for input_frame.
-        self.input_label = tk.Label(self.input_frame, text="Select a File: ")
+        self.input_label = tk.Label(
+            self.input_frame, text="Select a File: ", width=12, anchor="w"
+        )
         self.file_label = tk.Label(
             self.input_frame,
             width=50,
@@ -50,6 +56,26 @@ class Animal_grouper:
         self.input_label.pack(side="left")
         self.file_label.pack(side="left")
         self.input_browseBtn.pack(side="right")
+
+        # Create and pack the widgets for output_frame.
+        self.output_label = tk.Label(
+            self.output_frame, text="Select a Folder: ", width=12, anchor="w"
+        )
+        self.output_file_label = tk.Label(
+            self.output_frame,
+            width=50,
+            fg="blue",
+            bg="white",
+            anchor="w",
+            textvariable=self.output,
+        )
+        self.output_browseBtn = tk.Button(
+            self.output_frame, text="Browse", command=self.select_folder
+        )
+
+        self.output_label.pack(side="left")
+        self.output_file_label.pack(side="left")
+        self.output_browseBtn.pack(side="right")
 
         # Create and pack the widgets for config_frame.
         self.config_top = tk.Frame(self.config_frame)
@@ -104,6 +130,9 @@ class Animal_grouper:
         self.log_file_label = tk.Label(
             self.log_left, text="Selected File:", anchor="w", width=15
         )
+        self.log_output_label = tk.Label(
+            self.log_left, text="Output Location:", anchor="w", width=15
+        )
         self.log_group_amount_label = tk.Label(
             self.log_left, text="Group Amount: ", anchor="w", width=15
         )
@@ -117,6 +146,14 @@ class Animal_grouper:
         self.log_file_var = tk.Label(
             self.log_right,
             textvariable=self.file,
+            anchor="e",
+            fg="Blue",
+            width=50,
+            bg="white",
+        )
+        self.log_output_var = tk.Label(
+            self.log_right,
+            textvariable=self.output,
             anchor="e",
             fg="Blue",
             width=50,
@@ -148,11 +185,13 @@ class Animal_grouper:
         )
 
         self.log_file_label.pack()
+        self.log_output_label.pack()
         self.log_group_amount_label.pack()
         self.log_gender_label.pack()
         self.log_constant_label.pack()
 
         self.log_file_var.pack()
+        self.log_output_var.pack()
         self.log_group_amount_var.pack()
         self.log_gender_var.pack()
         self.log_constant_var.pack()
@@ -187,6 +226,7 @@ class Animal_grouper:
         # Pack the frames.
         self.title.pack()
         self.input_frame.pack(fill=tk.BOTH)
+        self.output_frame.pack(fill=tk.BOTH)
         self.config_frame.pack(fill=tk.BOTH)
         self.log_frame.pack(fill=tk.BOTH)
         self.display_frame.pack(fill=tk.BOTH)
@@ -201,12 +241,19 @@ class Animal_grouper:
         self.display_text.delete(1.0, tk.END)
 
     def upload(self, event=None):
-        filename = fd.askopenfilename(
-            initialdir=os.getcwd(),
+        file_name = fd.askopenfilename(
             title="Select a File",
+            initialdir="/",
             filetypes=[("Excel files", ".xlsx .xls")],
         )
-        self.file.set(filename)
+        self.file.set(file_name)
+
+    def select_folder(self, event=None):
+        folder_name = fd.askdirectory(
+            initialdir="/",
+            title="Select a Folder",
+        )
+        self.output.set(folder_name)
 
     def confirm(self, event=None):
         file_name = self.file.get()
@@ -230,7 +277,7 @@ class Animal_grouper:
             else:
                 grouper = Animal_grouping_generator(file_name, number, constant)
 
-            message = grouper.get_grouped_data()
+            message = grouper.get_grouped_data(self.output.get())
             self.display_text.insert(tk.END, "\nResult: " + message + "\n")
         except:
             self.display_text.insert(tk.END, "\nResult: Failed!\n")
@@ -332,14 +379,14 @@ class Animal_grouping_generator:
 
         return grouped_df
 
-    def get_grouped_data(self):
+    def get_grouped_data(self, output_path):
         grouped_ndarray = self.grouping(self.weight_ndarray, self.max_number_per_group)
         if type(grouped_ndarray) == str:
             return "The diversity of data is too high. Please set to a higher constant."
         else:
             grouped_df = self.convert_ndarray_to_df(grouped_ndarray)
             summary_df = grouped_df.describe()
-            with pd.ExcelWriter("output.xlsx") as writer:
+            with pd.ExcelWriter(output_path + "/output.xlsx") as writer:
                 grouped_df.to_excel(writer, sheet_name="Grouped data")
                 summary_df.to_excel(writer, sheet_name="Summary")
             return "Success!"
@@ -443,17 +490,17 @@ class Animal_grouping_generator_based_on_gender(Animal_grouping_generator):
 
             return grouped_ndarray
 
-    def get_grouped_data(self):
+    def get_grouped_data(self, output_path):
         grouped_ndarray = self.grouping_with_two_gender()
         if type(grouped_ndarray) == str:
             return "The diversity of data is too high. Please set to a higher constant."
         else:
             grouped_df = self.convert_ndarray_to_df(grouped_ndarray)
             summary_df = grouped_df.describe()
-            with pd.ExcelWriter("output.xlsx") as writer:
-                grouped_df.to_excel(writer, sheet_name="Grouped data")
+            with pd.ExcelWriter(output_path + "/output.xlsx") as writer:
                 self.grouped_female_df.to_excel(writer, sheet_name="Female")
                 self.grouped_male_df.to_excel(writer, sheet_name="Male")
+                grouped_df.to_excel(writer, sheet_name="Grouped data")
                 summary_df.to_excel(writer, sheet_name="Summary")
             return "Success!"
 
