@@ -2,13 +2,12 @@
 <img width="424" alt="GUI_grouper" src="https://github.com/luluwu516/GUI_animal_grouper/assets/98475122/a44211d0-421a-401c-9c8a-5ae7c0accefc">
 
 The program uses a graphical user interface (GUI) for experimental animal grouping.
-It's based on my first side project, [Animal Grouper](https://github.com/luluwu516/GUI_animal_grouper/new/main?readme=1), applying `tkinter` library to make a GUI program 
+It's based on my first side project, [Animal Grouping](https://github.com/luluwu516/animal-grouping), applying `tkinter` library to make a GUI program 
 
 
 ## Motivation
-I had a project about supplements feed for swine, and before the experiment, I had to group the piglets. I randomly grouped them first, 
-but the deviation of the piglets' weight was too large, so I spent more than 1 hour arranging the groups. I did the same thing twice for my project, 
-which was really a waste of time.
+I had a project about supplement feeding for swine, and before the experiment, I had to group the piglets. I randomly grouped them first, 
+but the deviation of the piglets' weight was too large, so I spent more than 1 hour arranging the groups. I did the same thing twice for my project, which was really a waste of time.
 
 
 When I learned Data Science with Python, I created a program to do it for myself and other researchers. And after learning more about Python, 
@@ -16,7 +15,7 @@ I built a GUI and shared the Executable file with my friends, which made me full
 
 
 ## Get Starting
-1. Upload your file with a specific format as the following show:
+1. Upload your file with a specific format as the following shows:
 
 
 <img width="618" alt="input_data" src="https://github.com/luluwu516/GUI_animal_grouper/assets/98475122/0e3cf23a-59df-4264-b601-9c3edc77a6a5">
