@@ -60,3 +60,8 @@ For the "Failed" message, please ensure the data is in the correct format and se
 
 
 If you receive the message, "The diversity of data is too high. Please set it to a higher constant." Please adjust the constant to a higher level.
+
+
+# Updated
+
+I put the app on the website with Streamlit! Click [here](https://github.com/luluwu516/streamlit-animal-grouper) to check!
